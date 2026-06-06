@@ -1,0 +1,14 @@
+# Dependencias de Node (solo para generar Excel localmente)
+node_modules/
+data/node_modules/
+
+# Configuración local de desarrollo
+.claude/
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*

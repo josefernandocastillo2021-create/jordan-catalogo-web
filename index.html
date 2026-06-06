@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Almacén El Jordán — Comedores, electrodomésticos, cocinas, refrigeradoras y más en Honduras. Consulta por WhatsApp.">
+  <title>Almacén El Jordán — Catálogo de Productos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo" aria-label="Almacén El Jordán - Inicio">
+      <img src="img/logo.svg" alt="Almacén El Jordán" class="navbar__logo-img">
+    </a>
+
+    <form class="navbar__busqueda" id="busqueda-form">
+      <input
+        type="text"
+        id="busqueda-input"
+        placeholder="Buscar productos..."
+        autocomplete="off"
+        aria-label="Buscar productos"
+      >
+      <button type="submit" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+    </form>
+
+    <button class="navbar__menu-btn" onclick="toggleMenuMovil()" aria-label="Menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ===== BARRA DE CATEGORÍAS (Desktop) ===== -->
+  <nav class="categorias-bar" id="categorias-desktop" aria-label="Categorías"></nav>
+
+  <!-- ===== MENÚ MÓVIL ===== -->
+  <nav class="menu-movil" id="menu-movil" id="categorias-movil" aria-label="Categorías móvil">
+    <div id="categorias-movil"></div>
+  </nav>
+
+  <!-- ===== CARRUSEL DE BANNERS ===== -->
+  <section class="carrusel" aria-label="Promociones">
+    <div class="carrusel__track" id="carrusel-track">
+
+      <!-- Banners: 1440 x 400 px en JPG. Guardar en img/banners/ -->
+      <div class="carrusel__slide">
+        <img src="img/banners/banner1.jpg" alt="Banner Página Principal 1 — 1440x400px" loading="eager" onerror="this.parentElement.style.background='#1B3A6B'">
+      </div>
+      <div class="carrusel__slide">
+        <img src="img/banners/banner2.jpg" alt="Banner Página Principal 2 — 1440x400px" loading="lazy" onerror="this.parentElement.style.background='#1B3A6B'">
+      </div>
+      <div class="carrusel__slide">
+        <img src="img/banners/banner3.jpg" alt="Banner Página Principal 3 — 1440x400px" loading="lazy" onerror="this.parentElement.style.background='#1B3A6B'">
+      </div>
+      <div class="carrusel__slide">
+        <img src="img/banners/banner4.jpg" alt="Banner Página Principal 4 — 1440x400px" loading="lazy" onerror="this.parentElement.style.background='#1B3A6B'">
+      </div>
+
+    </div>
+
+    <!-- Controles -->
+    <button class="carrusel__nav carrusel__nav--prev" id="carrusel-prev" aria-label="Banner anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="carrusel__nav carrusel__nav--next" id="carrusel-next" aria-label="Banner siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <!-- Puntos indicadores -->
+    <div class="carrusel__dots" id="carrusel-dots"></div>
+  </section>
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <main class="main">
+
+    <!-- Destacados -->
+    <section id="seccion-destacados" style="display:none; margin-bottom:32px;">
+      <h2 class="seccion-titulo">⭐ Destacados</h2>
+      <div class="productos-grid" id="destacados-grid"></div>
+    </section>
+
+    <!-- Catálogo completo -->
+    <section>
+      <div class="filtros-bar">
+        <h2 class="seccion-titulo" id="titulo-catalogo" style="margin:0; flex:1;">Todos los Productos</h2>
+        <p class="filtros-bar__info">Mostrando <span id="contador-productos">0</span> productos</p>
+      </div>
+      <div class="productos-grid" id="productos-grid">
+        <div class="loading"><div class="spinner"></div><span>Cargando productos...</span></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SECCIÓN SUCURSALES ===== -->
+  <section class="sucursales" id="encuentranos">
+    <div class="sucursales__inner">
+      <h2 class="seccion-titulo">📍 Encuéntranos</h2>
+
+      <div class="sucursales__layout">
+        <!-- Lista de sucursales (generada por JS) -->
+        <div class="sucursales__lista" id="sucursales-lista"></div>
+
+        <!-- Mapa -->
+        <div class="sucursales__mapa">
+          <iframe
+            id="mapa-sucursal"
+            src=""
+            style="border:0; display:block; width:100%; height:100%;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación de sucursal Almacén El Jordán">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="sucursales__servicios">
+        <span>📦 Envíos a nivel nacional</span>
+        <span>💳 Crédito con cédula</span>
+        <span>🗓️ Apartado 2 meses sin intereses</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__marca">
+        <h3>Almacén El Jordán</h3>
+        <p>Tu tienda de electrodomésticos y muebles de confianza en Honduras. Calidad y precio justo desde San Pedro Sula.</p>
+        <a href="https://wa.me/50494452724" target="_blank" class="footer__whatsapp-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          WhatsApp: 9445-2724
+        </a>
+      </div>
+      <div class="footer__col">
+        <h4>Categorías</h4>
+        <ul>
+          <li>Comedores</li>
+          <li>Estufas</li>
+          <li>Refrigeradoras</li>
+          <li>Lavadoras</li>
+          <li>Congeladores</li>
+          <li>Microondas</li>
+          <li>Pequeños Electrodomésticos</li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Servicios</h4>
+        <ul>
+          <li>Envíos nacionales</li>
+          <li>Crédito con cédula</li>
+          <li>Apartado 2 meses</li>
+          <li>Garantía de productos</li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>📱 9445-2724</li>
+          <li>📍 San Pedro Sula</li>
+          <li>🕐 Lunes a Sábado</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Almacén El Jordán — Todos los derechos reservados</span>
+      <span>San Pedro Sula, Honduras</span>
+    </div>
+  </footer>
+
+  <!-- ===== BOTÓN FLOTANTE WHATSAPP ===== -->
+  <a href="https://wa.me/50494452724" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <script src="js/whatsapp.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

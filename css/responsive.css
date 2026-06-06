@@ -1,0 +1,81 @@
+/* =============================================
+   ALMACÉN EL JORDÁN — Responsive
+   ============================================= */
+
+/* === Tablet (768px – 1024px) === */
+@media (max-width: 1024px) {
+  .productos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .navbar__whatsapp span { display: none; }
+}
+
+/* === Tablet pequeña (768px) === */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 56px;
+    --categorias-height: 44px;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .navbar__busqueda { max-width: none; }
+
+  .navbar__whatsapp { display: none; }
+
+  .navbar__menu-btn { display: flex; }
+
+  /* Ocultar categorias-bar en móvil (se usa menú hamburguesa) */
+  .categorias-bar { display: none; }
+
+  body { padding-top: var(--navbar-height); }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* === Mobile (< 480px) === */
+@media (max-width: 480px) {
+  .productos-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .producto-card__foto {
+    aspect-ratio: 4 / 3;
+  }
+
+  .main { padding: 16px 12px; }
+
+  .whatsapp-float {
+    bottom: 16px;
+    right: 16px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .seccion-titulo { font-size: 17px; }
+}
+
+/* === Desktop grande (> 1280px) === */
+@media (min-width: 1280px) {
+  .productos-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

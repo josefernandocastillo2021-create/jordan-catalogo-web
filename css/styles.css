@@ -169,10 +169,12 @@ button { cursor: pointer; border: none; font-family: inherit; }
   position: relative;
   overflow: hidden;
   background: var(--color-primario);
-  width: 100%;
+  width: calc(100% - 32px);
+  max-width: 1280px;
+  margin: 20px auto;
   aspect-ratio: 1500 / 438;
-  margin-left: 0;
-  margin-right: 0;
+  border-radius: 14px;
+  box-shadow: var(--sombra);
 }
 
 .carrusel__track {
@@ -264,7 +266,7 @@ button { cursor: pointer; border: none; font-family: inherit; }
 .main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 28px 20px;
 }
 
 /* === Sección Destacados === */
@@ -309,7 +311,7 @@ button { cursor: pointer; border: none; font-family: inherit; }
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 22px;
 }
 
 /* === Card de Producto === */

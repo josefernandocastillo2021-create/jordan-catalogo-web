@@ -25,7 +25,7 @@
 
   .productos-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 16px;
   }
 
   .navbar__busqueda { max-width: none; }
@@ -54,7 +54,7 @@
 @media (max-width: 480px) {
   .productos-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 14px;
   }
 
   .producto-card__foto {

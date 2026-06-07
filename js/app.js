@@ -92,28 +92,51 @@ function seleccionarSucursal(indice) {
   });
 }
 
-/* === Carga de productos (Sheets o JSON local) === */
+/* === Carga de productos (estrategia stale-while-revalidate) ===
+   1. Si hay caché, muestra los datos al instante (carga rápida)
+   2. Siempre consulta Sheets en segundo plano y, si algo cambió
+      (precios, productos, etc.), actualiza la página en 1-2 segundos */
 async function cargarProductos() {
-  mostrarCargando();
-
   const cache = leerCache();
+
   if (cache) {
     todosLosProductos = cache;
     renderizarTodo();
+    revalidarProductos(); // refresca en segundo plano sin bloquear
     return;
   }
 
+  // Primera visita o caché vencido: mostrar spinner y esperar datos
+  mostrarCargando();
   try {
-    const datos = SHEETS_ID
-      ? await cargarDesdeSheets()
-      : await cargarDesdeJSON();
-
-    todosLosProductos = datos.filter(p => p.activo === true || p.activo === 'TRUE');
-    guardarCache(todosLosProductos);
+    const datos = await obtenerProductosFrescos();
+    todosLosProductos = datos;
+    guardarCache(datos);
     renderizarTodo();
   } catch (error) {
     console.error('Error cargando productos:', error);
     mostrarError();
+  }
+}
+
+/* Obtiene y filtra los productos desde Sheets (o JSON local) */
+async function obtenerProductosFrescos() {
+  const datos = SHEETS_ID ? await cargarDesdeSheets() : await cargarDesdeJSON();
+  return datos.filter(p => p.activo === true || p.activo === 'TRUE');
+}
+
+/* Revalida en segundo plano: si los datos cambiaron, actualiza la vista */
+async function revalidarProductos() {
+  try {
+    const frescos = await obtenerProductosFrescos();
+    if (JSON.stringify(frescos) !== JSON.stringify(todosLosProductos)) {
+      todosLosProductos = frescos;
+      guardarCache(frescos);
+      renderizarTodo();
+    }
+  } catch (error) {
+    // Silencioso: ya se mostró el caché, no molestar al usuario
+    console.warn('No se pudo revalidar productos:', error);
   }
 }
 

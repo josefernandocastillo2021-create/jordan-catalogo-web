@@ -631,12 +631,13 @@ button { cursor: pointer; border: none; font-family: inherit; }
   left: auto;
 }
 
-/* Badge de descuento en círculo (solo cuando hay oferta) */
+/* Badge de descuento en círculo rojo (solo cuando hay oferta) */
 .producto-card__badge--oferta {
   width: 46px;
   height: 46px;
   padding: 0;
   border-radius: 50%;
+  background: #E02424;
   display: flex;
   align-items: center;
   justify-content: center;

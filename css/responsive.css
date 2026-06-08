@@ -63,7 +63,7 @@
 
   .producto-card__info { padding: 11px; gap: 5px; }
 
-  .producto-card__categoria { font-size: 12px; }
+  .producto-card__categoria { font-size: 10px; }
 
   .producto-card__nombre { font-size: 12px; }
 
@@ -73,6 +73,9 @@
   .producto-card__btn-cotizar { font-size: 12.5px; padding: 9px; gap: 5px; font-weight: 700; }
 
   .producto-card__badge { font-size: 9px; padding: 2px 6px; }
+
+  /* Círculo de % más pequeño también en el catálogo en móvil */
+  .producto-card__badge--oferta { width: 34px; height: 34px; font-size: 9px; }
 
   .main { padding: 16px 10px; }
 

@@ -617,7 +617,7 @@ button { cursor: pointer; border: none; font-family: inherit; }
   }
   /* Texto más compacto en destacados (las tarjetas son más pequeñas) */
   .destacados-track .producto-card__info { padding: 8px; gap: 2px; }
-  .destacados-track .producto-card__categoria { font-size: 9px; }
+  .destacados-track .producto-card__categoria { font-size: 8px; letter-spacing: 0; }
   .destacados-track .producto-card__nombre { font-size: 11px; line-height: 1.25; }
   .destacados-track .producto-card__precio { font-size: 14px; }
   .destacados-track .producto-card__precio-anterior { font-size: 10px; }
@@ -719,15 +719,15 @@ button { cursor: pointer; border: none; font-family: inherit; }
 
 /* Badge de descuento en círculo rojo (solo cuando hay oferta) */
 .producto-card__badge--oferta {
-  width: 46px;
-  height: 46px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   border-radius: 50%;
   background: #E02424;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.18);
 }
 
@@ -762,10 +762,10 @@ button { cursor: pointer; border: none; font-family: inherit; }
 }
 
 .producto-card__categoria {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--color-texto-secundario);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .producto-card__nombre {

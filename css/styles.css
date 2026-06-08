@@ -528,6 +528,55 @@ button { cursor: pointer; border: none; font-family: inherit; }
   gap: 22px;
 }
 
+/* === Paginación === */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.pagina-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1.5px solid var(--color-borde);
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transicion);
+}
+
+.pagina-btn:hover:not(:disabled):not(.activa) {
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+.pagina-btn.activa {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.pagina-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagina-nav { font-size: 18px; font-weight: 700; }
+
+.pagina-ellipsis {
+  min-width: 24px;
+  text-align: center;
+  color: var(--color-texto-secundario);
+}
+
 /* === Card de Producto === */
 .producto-card {
   background: var(--color-blanco);

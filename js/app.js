@@ -8,6 +8,10 @@ let todosLosProductos = [];
 let categoriaActiva = 'Todos';
 let terminoBusqueda = '';
 
+/* Paginación */
+const POR_PAGINA = 20;
+let paginaActual = 1;
+
 /* === Inicialización === */
 document.addEventListener('DOMContentLoaded', () => {
   iniciarCategorias();
@@ -314,10 +318,60 @@ function renderizarGrid(productos) {
 
   if (productos.length === 0) {
     grid.innerHTML = htmlSinResultados();
+    renderizarPaginacion(0);
     return;
   }
 
-  grid.innerHTML = productos.map(p => crearCardHTML(p)).join('');
+  const totalPaginas = Math.ceil(productos.length / POR_PAGINA);
+  if (paginaActual > totalPaginas) paginaActual = 1;
+
+  const inicio = (paginaActual - 1) * POR_PAGINA;
+  const pagina = productos.slice(inicio, inicio + POR_PAGINA);
+
+  grid.innerHTML = pagina.map(p => crearCardHTML(p)).join('');
+  renderizarPaginacion(totalPaginas);
+}
+
+/* === Paginación === */
+function renderizarPaginacion(totalPaginas) {
+  const cont = document.getElementById('paginacion');
+  if (!cont) return;
+
+  if (totalPaginas <= 1) { cont.innerHTML = ''; return; }
+
+  let botones = '';
+
+  // Flecha anterior
+  botones += `<button class="pagina-btn pagina-nav" ${paginaActual === 1 ? 'disabled' : ''} onclick="irAPagina(${paginaActual - 1})" aria-label="Anterior">‹</button>`;
+
+  // Números con elipsis cuando hay muchas páginas
+  const paginas = calcularPaginasVisibles(paginaActual, totalPaginas);
+  paginas.forEach(p => {
+    if (p === '...') {
+      botones += `<span class="pagina-ellipsis">…</span>`;
+    } else {
+      botones += `<button class="pagina-btn ${p === paginaActual ? 'activa' : ''}" onclick="irAPagina(${p})">${p}</button>`;
+    }
+  });
+
+  // Flecha siguiente
+  botones += `<button class="pagina-btn pagina-nav" ${paginaActual === totalPaginas ? 'disabled' : ''} onclick="irAPagina(${paginaActual + 1})" aria-label="Siguiente">›</button>`;
+
+  cont.innerHTML = botones;
+}
+
+function calcularPaginasVisibles(actual, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  if (actual <= 4) return [1, 2, 3, 4, 5, '...', total];
+  if (actual >= total - 3) return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+  return [1, '...', actual - 1, actual, actual + 1, '...', total];
+}
+
+function irAPagina(n) {
+  paginaActual = n;
+  renderizarGrid(filtrarProductos());
+  const titulo = document.getElementById('titulo-catalogo');
+  if (titulo) titulo.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function actualizarContador(total) {
@@ -456,6 +510,7 @@ function iniciarCategorias() {
 
 function seleccionarCategoria(categoria) {
   categoriaActiva = categoria;
+  paginaActual = 1;
 
   document.querySelectorAll('.categoria-btn').forEach(btn => {
     btn.classList.toggle('activo', btn.dataset.categoria === categoria);
@@ -472,6 +527,7 @@ function iniciarBusqueda() {
 
   input.addEventListener('input', (e) => {
     terminoBusqueda = e.target.value.trim();
+    paginaActual = 1;
 
     // Al buscar, resetear la categoría a "Todos" para buscar en todo el catálogo
     if (terminoBusqueda !== '' && categoriaActiva !== 'Todos') {

@@ -614,6 +614,19 @@ button { cursor: pointer; border: none; font-family: inherit; }
   left: auto;
 }
 
+/* Badge de descuento en círculo (solo cuando hay oferta) */
+.producto-card__badge--oferta {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+
 .producto-card__foto {
   aspect-ratio: 1 / 1;
   overflow: hidden;
@@ -674,6 +687,9 @@ button { cursor: pointer; border: none; font-family: inherit; }
   font-weight: 700;
   color: var(--color-primario);
 }
+
+/* Precio en rojo solo cuando el producto está en oferta */
+.producto-card__precio--oferta { color: #E02424; }
 
 .producto-card__precio-anterior {
   font-size: 12px;

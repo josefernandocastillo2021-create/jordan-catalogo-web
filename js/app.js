@@ -409,7 +409,7 @@ function crearCardHTML(producto) {
     : iconoSinFoto();
 
   const badgeOferta = tieneOferta
-    ? `<span class="producto-card__badge">-${descuento}%</span>`
+    ? `<span class="producto-card__badge producto-card__badge--oferta">-${descuento}%</span>`
     : '';
 
   const badgeDestacado = (producto.destacado === true || producto.destacado === 'TRUE')
@@ -431,7 +431,7 @@ function crearCardHTML(producto) {
         <span class="producto-card__categoria">${producto.categoria} · <span style="font-weight:600;color:#1B3A6B;">${producto.id}</span></span>
         <h3 class="producto-card__nombre">${producto.nombre}</h3>
         <div class="producto-card__precios">
-          <span class="producto-card__precio">L ${producto.precio.toLocaleString('es-HN')}</span>
+          <span class="producto-card__precio ${tieneOferta ? 'producto-card__precio--oferta' : ''}">L ${producto.precio.toLocaleString('es-HN')}</span>
           ${precioAnterior}
         </div>
         <button class="producto-card__btn-cotizar" onclick="event.stopPropagation(); agregarAlCarrito('${producto.id}', '${nombreEsc}', ${producto.precio}, 1)">

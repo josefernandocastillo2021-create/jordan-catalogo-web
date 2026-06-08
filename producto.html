@@ -141,6 +141,8 @@
       color: var(--color-primario);
     }
 
+    .producto-info__precio--oferta { color: #E02424; }
+
     .producto-info__precio-anterior {
       font-size: 18px;
       color: var(--color-precio-anterior);
@@ -425,13 +427,13 @@
       const precioAnt = oferta ? `<span class="producto-card__precio-anterior">L ${p.precio_anterior.toLocaleString('es-HN')}</span>` : '';
       return `
         <div class="producto-card" onclick="window.location='producto.html?id=${p.id}'">
-          ${oferta ? `<span class="producto-card__badge">-${desc}%</span>` : ''}
+          ${oferta ? `<span class="producto-card__badge producto-card__badge--oferta">-${desc}%</span>` : ''}
           <div class="producto-card__foto">${fotoHTML}</div>
           <div class="producto-card__info">
             <span class="producto-card__categoria">${p.categoria} · <span style="font-weight:600;color:#1B3A6B;">${p.id}</span></span>
             <h3 class="producto-card__nombre">${p.nombre}</h3>
             <div class="producto-card__precios">
-              <span class="producto-card__precio">L ${p.precio.toLocaleString('es-HN')}</span>
+              <span class="producto-card__precio ${oferta ? 'producto-card__precio--oferta' : ''}">L ${p.precio.toLocaleString('es-HN')}</span>
               ${precioAnt}
             </div>
             <button class="producto-card__btn-cotizar" onclick="event.stopPropagation(); agregarAlCarrito('${p.id}','${nombreEsc}',${p.precio},1)">
@@ -488,7 +490,7 @@
           ${badges}
 
           <div class="producto-info__precios">
-            <span class="producto-info__precio">L ${p.precio.toLocaleString('es-HN')}</span>
+            <span class="producto-info__precio ${tieneOferta ? 'producto-info__precio--oferta' : ''}">L ${p.precio.toLocaleString('es-HN')}</span>
             ${precioAnterior}
           </div>
           <p class="pdp__nota">Precio válido hasta agotar existencias</p>

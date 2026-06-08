@@ -62,9 +62,11 @@ const SUCURSALES = [
 
 function iniciarSucursales() {
   const lista = document.getElementById('sucursales-lista');
+  const select = document.getElementById('sucursales-select');
   const mapa = document.getElementById('mapa-sucursal');
   if (!lista || !mapa) return;
 
+  // Lista (escritorio)
   lista.innerHTML = SUCURSALES.map((s, i) => `
     <button class="sucursal-item ${i === 0 ? 'activa' : ''}" data-indice="${i}">
       <span class="sucursal-item__icono">📍</span>
@@ -78,12 +80,20 @@ function iniciarSucursales() {
     </button>
   `).join('');
 
-  // Cargar el primer mapa
-  mapa.src = SUCURSALES[0].mapa;
-
   lista.querySelectorAll('.sucursal-item').forEach(btn => {
     btn.addEventListener('click', () => seleccionarSucursal(parseInt(btn.dataset.indice)));
   });
+
+  // Dropdown (móvil)
+  if (select) {
+    select.innerHTML = SUCURSALES.map((s, i) =>
+      `<option value="${i}">📍 ${s.nombre} — ${s.ciudad}${s.principal ? ' (Principal)' : ''}</option>`
+    ).join('');
+    select.addEventListener('change', () => seleccionarSucursal(parseInt(select.value)));
+  }
+
+  // Cargar el primer mapa
+  mapa.src = SUCURSALES[0].mapa;
 }
 
 function seleccionarSucursal(indice) {
@@ -93,6 +103,9 @@ function seleccionarSucursal(indice) {
   document.querySelectorAll('.sucursal-item').forEach((btn, i) => {
     btn.classList.toggle('activa', i === indice);
   });
+
+  const select = document.getElementById('sucursales-select');
+  if (select && select.value != indice) select.value = indice;
 }
 
 /* === Carga de productos (estrategia stale-while-revalidate) ===

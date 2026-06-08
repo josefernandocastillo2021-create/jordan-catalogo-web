@@ -897,6 +897,27 @@ button { cursor: pointer; border: none; font-family: inherit; }
   background: var(--color-fondo);
 }
 
+/* Dropdown de sucursales: oculto en escritorio, visible en móvil */
+.sucursales__select {
+  display: none;
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-texto);
+  background: var(--color-blanco);
+  border: 1.5px solid var(--color-primario);
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231B3A6B' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
 @media (max-width: 768px) {
   .sucursales {
     padding: 28px 14px;
@@ -905,24 +926,12 @@ button { cursor: pointer; border: none; font-family: inherit; }
     grid-template-columns: 1fr;
     gap: 14px;
   }
-  /* Mapa primero (arriba), sucursales como chips abajo */
+  /* En móvil: dropdown arriba, lista oculta, mapa debajo */
+  .sucursales__select { display: block; order: -1; }
+  .sucursales__lista { display: none; }
   .sucursales__mapa {
-    order: -1;
-    min-height: 300px;
-    height: 300px;
-  }
-  .sucursales__lista {
-    flex-direction: row;
-    overflow-x: auto;
-    max-height: none;
-    padding-bottom: 6px;
-    gap: 10px;
-    scroll-snap-type: x mandatory;
-  }
-  .sucursal-item {
-    flex-shrink: 0;
-    min-width: 200px;
-    scroll-snap-align: start;
+    min-height: 320px;
+    height: 320px;
   }
 }
 

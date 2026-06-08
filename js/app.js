@@ -14,7 +14,6 @@ let paginaActual = 1;
 
 /* === Inicialización === */
 document.addEventListener('DOMContentLoaded', () => {
-  iniciarCategorias();
   cargarProductos();
   cargarBanners();
   iniciarBusqueda();
@@ -105,6 +104,7 @@ async function cargarProductos() {
 
   if (cache) {
     todosLosProductos = cache;
+    construirCategorias();
     renderizarTodo();
     revalidarProductos(); // refresca en segundo plano sin bloquear
     return;
@@ -116,6 +116,7 @@ async function cargarProductos() {
     const datos = await obtenerProductosFrescos();
     todosLosProductos = datos;
     guardarCache(datos);
+    construirCategorias();
     renderizarTodo();
   } catch (error) {
     console.error('Error cargando productos:', error);
@@ -136,6 +137,7 @@ async function revalidarProductos() {
     if (JSON.stringify(frescos) !== JSON.stringify(todosLosProductos)) {
       todosLosProductos = frescos;
       guardarCache(frescos);
+      construirCategorias();
       renderizarTodo();
     }
   } catch (error) {
@@ -487,16 +489,23 @@ function mostrarError() {
   if (grid) grid.innerHTML = `<div class="sin-resultados"><h3>Error al cargar</h3><p>Intenta recargar la página.</p></div>`;
 }
 
-/* === Categorías === */
-function iniciarCategorias() {
-  const categorias = ['Todos', 'Comedores', 'Estufas', 'Refrigeradoras', 'Lavadoras', 'Congeladores', 'Microondas', 'Pequeños Electrodomésticos'];
+/* === Categorías (generadas automáticamente desde el Sheet) === */
+function construirCategorias() {
+  // 'Todos' + categorías únicas según los productos activos (en orden de aparición)
+  const unicas = [...new Set(
+    todosLosProductos
+      .map(p => (p.categoria || '').trim())
+      .filter(c => c !== '')
+  )];
+  const categorias = ['Todos', ...unicas];
 
   const barraDesktop = document.getElementById('categorias-desktop');
   const barraMovil = document.getElementById('categorias-movil');
 
   const crearBotones = (contenedor) => {
+    if (!contenedor) return;
     contenedor.innerHTML = categorias.map(cat =>
-      `<button class="categoria-btn ${cat === 'Todos' ? 'activo' : ''}" data-categoria="${cat}">${cat}</button>`
+      `<button class="categoria-btn ${cat === categoriaActiva ? 'activo' : ''}" data-categoria="${cat}">${cat}</button>`
     ).join('');
 
     contenedor.querySelectorAll('.categoria-btn').forEach(btn => {
@@ -504,8 +513,8 @@ function iniciarCategorias() {
     });
   };
 
-  if (barraDesktop) crearBotones(barraDesktop);
-  if (barraMovil) crearBotones(barraMovil);
+  crearBotones(barraDesktop);
+  crearBotones(barraMovil);
 }
 
 function seleccionarCategoria(categoria) {

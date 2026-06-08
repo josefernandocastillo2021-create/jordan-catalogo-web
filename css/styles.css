@@ -557,7 +557,7 @@ button { cursor: pointer; border: none; font-family: inherit; }
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-texto);
   display: flex;
   align-items: center;
   gap: 8px;

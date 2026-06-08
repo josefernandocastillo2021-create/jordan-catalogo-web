@@ -14,12 +14,12 @@ function guardarCarrito(items) {
   actualizarContadorCarrito();
 }
 
-function agregarAlCarrito(id, nombre, precio, cantidad) {
+function agregarAlCarrito(id, nombre, precio, cantidad, foto) {
   cantidad = parseInt(cantidad) || 1;
   const items = obtenerCarrito();
   const existente = items.find(i => i.id === id);
   if (existente) existente.cantidad += cantidad;
-  else items.push({ id, nombre, precio: Number(precio) || 0, cantidad });
+  else items.push({ id, nombre, precio: Number(precio) || 0, cantidad, foto: foto || '' });
   guardarCarrito(items);
   renderizarCarrito();
   mostrarToast(`${nombre} agregado a la cotización`);
@@ -38,6 +38,10 @@ function cambiarCantidadCarrito(id, delta) {
   if (it.cantidad <= 0) return quitarDelCarrito(id);
   guardarCarrito(items);
   renderizarCarrito();
+}
+
+function iconoSinFotoCarrito() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>`;
 }
 
 function totalCarrito() {
@@ -90,24 +94,30 @@ function renderizarCarrito() {
     return;
   }
 
-  cont.innerHTML = items.map(i => `
+  cont.innerHTML = items.map(i => {
+    const fotoHTML = i.foto
+      ? `<img src="${i.foto}" alt="${i.nombre}" loading="lazy" onerror="this.style.display='none'">`
+      : iconoSinFotoCarrito();
+    return `
     <div class="carrito-item">
-      <div class="carrito-item__info">
+      <div class="carrito-item__foto">${fotoHTML}</div>
+      <div class="carrito-item__cuerpo">
         <span class="carrito-item__nombre">${i.nombre}</span>
-        <span class="carrito-item__precio">L ${i.precio.toLocaleString('es-HN')}</span>
-      </div>
-      <div class="carrito-item__acciones">
-        <div class="carrito-qty">
-          <button onclick="cambiarCantidadCarrito('${i.id}', -1)" aria-label="Restar">−</button>
-          <span>${i.cantidad}</span>
-          <button onclick="cambiarCantidadCarrito('${i.id}', 1)" aria-label="Sumar">+</button>
+        <span class="carrito-item__id">${i.id}</span>
+        <div class="carrito-item__fila">
+          <span class="carrito-item__precio">L ${i.precio.toLocaleString('es-HN')}</span>
+          <div class="carrito-qty">
+            <button onclick="cambiarCantidadCarrito('${i.id}', -1)" aria-label="Restar">−</button>
+            <span>${i.cantidad}</span>
+            <button onclick="cambiarCantidadCarrito('${i.id}', 1)" aria-label="Sumar">+</button>
+          </div>
         </div>
-        <button class="carrito-item__quitar" onclick="quitarDelCarrito('${i.id}')" aria-label="Quitar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        </button>
       </div>
-    </div>
-  `).join('');
+      <button class="carrito-item__quitar" onclick="quitarDelCarrito('${i.id}')" aria-label="Quitar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+    </div>`;
+  }).join('');
 
   const totalEl = document.getElementById('carrito-total');
   if (totalEl) totalEl.textContent = 'L ' + totalCarrito().toLocaleString('es-HN');

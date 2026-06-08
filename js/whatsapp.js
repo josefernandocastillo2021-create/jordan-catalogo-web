@@ -1,6 +1,6 @@
 /* === whatsapp.js — Links dinámicos de WhatsApp === */
 
-const WA_NUMERO = '50494452724';
+const WA_NUMERO = '50492265826';
 const WA_BASE = 'https://wa.me/';
 
 /* Genera link de WhatsApp con mensaje prellenado para un producto */

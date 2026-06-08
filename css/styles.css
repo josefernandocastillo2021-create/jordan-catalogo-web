@@ -699,6 +699,28 @@ button { cursor: pointer; border: none; font-family: inherit; }
 
 .producto-card__btn:hover { background: var(--color-success-hover); }
 
+/* Botón único de cotización en la tarjeta */
+.producto-card__btn-cotizar {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px;
+  background: var(--color-primario);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background var(--transicion);
+}
+
+.producto-card__btn-cotizar:hover { background: var(--color-primario-hover); }
+
 /* === Placeholder sin foto === */
 .foto-placeholder {
   width: 100%;

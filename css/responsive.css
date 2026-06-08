@@ -67,7 +67,8 @@
 
   .producto-card__precio { font-size: 16px; }
 
-  .producto-card__btn { font-size: 11px; padding: 8px; gap: 4px; }
+  .producto-card__btn,
+  .producto-card__btn-cotizar { font-size: 11px; padding: 8px; gap: 4px; }
 
   .producto-card__badge { font-size: 9px; padding: 2px 6px; }
 

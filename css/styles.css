@@ -615,6 +615,13 @@ button { cursor: pointer; border: none; font-family: inherit; }
     top: 6px;
     left: 6px;
   }
+  /* Texto más compacto en destacados (las tarjetas son más pequeñas) */
+  .destacados-track .producto-card__info { padding: 8px; gap: 2px; }
+  .destacados-track .producto-card__categoria { font-size: 9px; }
+  .destacados-track .producto-card__nombre { font-size: 11px; line-height: 1.25; }
+  .destacados-track .producto-card__precio { font-size: 14px; }
+  .destacados-track .producto-card__precio-anterior { font-size: 10px; }
+  .destacados-track .producto-card__btn-cotizar { font-size: 10px; padding: 7px 4px; gap: 3px; }
 }
 
 /* === Grid de Productos === */

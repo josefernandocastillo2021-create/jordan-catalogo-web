@@ -999,7 +999,8 @@ button { cursor: pointer; border: none; font-family: inherit; }
   margin: 20px auto 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   font-size: 12px;
   color: rgba(255,255,255,0.5);
   flex-wrap: wrap;

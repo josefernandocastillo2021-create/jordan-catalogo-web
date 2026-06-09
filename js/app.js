@@ -2,7 +2,7 @@
 
 const CACHE_KEY = 'jordan_productos';
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutos en ms
-const SHEETS_ID = '1KGS32zQnZTcs9lCVFqqocRm1QbOoyZdeNAz66JLn4nA';
+const API_URL = 'https://script.google.com/macros/s/AKfycbw4Tx2mVKd_l6GuImW6SDJl_ZyX_IXGmYKzmhtlhewszfkLCHb0qrqkX8Z7Ni8MbNQ6_Q/exec';
 
 let todosLosProductos = [];
 let categoriaActiva = 'Todos';
@@ -148,10 +148,10 @@ async function cargarProductos() {
   }
 }
 
-/* Obtiene y filtra los productos desde Sheets (o JSON local) */
+/* Obtiene y filtra los productos desde el Apps Script */
 async function obtenerProductosFrescos() {
-  const datos = SHEETS_ID ? await cargarDesdeSheets() : await cargarDesdeJSON();
-  return datos.filter(p => p.activo === true || p.activo === 'TRUE');
+  const datos = await cargarDesdeSheets();
+  return datos.filter(p => p.activo);
 }
 
 /* Revalida en segundo plano: si los datos cambiaron, actualiza la vista */
@@ -171,71 +171,38 @@ async function revalidarProductos() {
 }
 
 async function cargarDesdeSheets() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/gviz/tq?tqx=out:json&sheet=productos_jordan`;
-  const res = await fetch(url);
-  const text = await res.text();
-  // Google devuelve /*O_o*/\ngoogle.visualization.Query.setResponse({...})
-  const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-  const filas = json.table.rows;
-  return filas.map(fila => {
-    const c = fila.c;
-    const val = (i) => (c[i] && c[i].v !== null && c[i].v !== undefined) ? c[i].v : '';
-    return {
-      id:              val(0),
-      nombre:          val(1),
-      precio:          parseFloat(val(2)) || 0,
-      precio_anterior: val(3) !== '' ? parseFloat(val(3)) : null,
-      categoria:       val(4),
-      descripcion:     val(5),
-      foto1:           val(6),
-      foto2:           val(7),
-      foto3:           val(8),
-      foto4:           val(9),
-      activo:          val(10) === true || val(10) === 'TRUE',
-      destacado:       val(11) === true || val(11) === 'TRUE',
-    };
-  });
+  const res = await fetch(`${API_URL}?tipo=productos`);
+  const filas = await res.json();
+  return filas.map(fila => ({
+    id:              String(fila.id || ''),
+    nombre:          String(fila.nombre || ''),
+    precio:          parseFloat(fila.precio) || 0,
+    precio_anterior: (fila.precio_anterior !== '' && fila.precio_anterior !== null && fila.precio_anterior !== undefined)
+                       ? parseFloat(fila.precio_anterior) : null,
+    categoria:       String(fila.categoria || ''),
+    descripcion:     String(fila.descripcion || ''),
+    foto1:           String(fila.foto1 || ''),
+    foto2:           String(fila.foto2 || ''),
+    foto3:           String(fila.foto3 || ''),
+    foto4:           String(fila.foto4 || ''),
+    activo:          fila.activo === true || String(fila.activo).toUpperCase() === 'TRUE',
+    destacado:       fila.destacado === true || String(fila.destacado).toUpperCase() === 'TRUE',
+  }));
 }
 
-async function cargarDesdeJSON() {
-  const res = await fetch('data/productos.json');
-  return res.json();
-}
-
-/* Convierte fila de Sheets a objeto producto */
-function filaAProducto(fila) {
-  return {
-    id: fila[0] || '',
-    nombre: fila[1] || '',
-    precio: parseFloat(fila[2]) || 0,
-    precio_anterior: fila[3] ? parseFloat(fila[3]) : null,
-    categoria: fila[4] || '',
-    descripcion: fila[5] || '',
-    foto1: fila[6] || '',
-    foto2: fila[7] || '',
-    foto3: fila[8] || '',
-    foto4: fila[9] || '',
-    activo: fila[10] === 'TRUE',
-    destacado: fila[11] === 'TRUE',
-  };
-}
-
-/* === Banners desde Sheets === */
+/* === Banners desde Apps Script === */
 async function cargarBanners() {
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/gviz/tq?tqx=out:json&sheet=BANNERS`;
-    const res = await fetch(url);
-    const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const filas = json.table.rows;
+    const res = await fetch(`${API_URL}?tipo=banners`);
+    const filas = await res.json();
 
     const banners = filas
       .map(fila => ({
-        orden: fila.c[0] ? fila.c[0].v : null,
-        link:  fila.c[1] && fila.c[1].v ? fila.c[1].v.trim() : '',
-        activo: fila.c[2] ? fila.c[2].v : false,
+        orden:  Number(fila.orden) || 0,
+        link:   String(fila.link  || '').trim(),
+        activo: fila.activo === true || String(fila.activo).toUpperCase() === 'TRUE',
       }))
-      .filter(b => (b.activo === true || b.activo === 'TRUE') && b.link !== '')
+      .filter(b => b.activo && b.link !== '')
       .sort((a, b) => a.orden - b.orden);
 
     const seccion = document.querySelector('.carrusel');

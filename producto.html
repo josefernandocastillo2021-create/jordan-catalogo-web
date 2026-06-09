@@ -335,7 +335,7 @@
   <script src="js/galeria.js"></script>
   <script>
     const CACHE_KEY = 'jordan_productos';
-    const SHEETS_ID = '1KGS32zQnZTcs9lCVFqqocRm1QbOoyZdeNAz66JLn4nA';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw4Tx2mVKd_l6GuImW6SDJl_ZyX_IXGmYKzmhtlhewszfkLCHb0qrqkX8Z7Ni8MbNQ6_Q/exec';
     let TODOS = [];
     let PRODUCTO_ACTUAL = null;
 
@@ -345,23 +345,23 @@
     }
 
     async function cargarDesdeSheets() {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/gviz/tq?tqx=out:json&sheet=productos_jordan`;
-      const res = await fetch(url);
-      const text = await res.text();
-      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-      return json.table.rows.map(fila => {
-        const c = fila.c;
-        const val = (i) => (c[i] && c[i].v !== null && c[i].v !== undefined) ? c[i].v : '';
-        return {
-          id: val(0), nombre: val(1),
-          precio: parseFloat(val(2)) || 0,
-          precio_anterior: val(3) !== '' ? parseFloat(val(3)) : null,
-          categoria: val(4), descripcion: val(5),
-          foto1: val(6), foto2: val(7), foto3: val(8), foto4: val(9),
-          activo: val(10) === true || val(10) === 'TRUE',
-          destacado: val(11) === true || val(11) === 'TRUE',
-        };
-      });
+      const res = await fetch(`${API_URL}?tipo=productos`);
+      const filas = await res.json();
+      return filas.map(fila => ({
+        id:              String(fila.id || ''),
+        nombre:          String(fila.nombre || ''),
+        precio:          parseFloat(fila.precio) || 0,
+        precio_anterior: (fila.precio_anterior !== '' && fila.precio_anterior !== null && fila.precio_anterior !== undefined)
+                           ? parseFloat(fila.precio_anterior) : null,
+        categoria:       String(fila.categoria || ''),
+        descripcion:     String(fila.descripcion || ''),
+        foto1:           String(fila.foto1 || ''),
+        foto2:           String(fila.foto2 || ''),
+        foto3:           String(fila.foto3 || ''),
+        foto4:           String(fila.foto4 || ''),
+        activo:          fila.activo === true || String(fila.activo).toUpperCase() === 'TRUE',
+        destacado:       fila.destacado === true || String(fila.destacado).toUpperCase() === 'TRUE',
+      }));
     }
 
     function leerCache() {

@@ -173,21 +173,24 @@ async function revalidarProductos() {
 async function cargarDesdeSheets() {
   const res = await fetch(`${API_URL}?tipo=productos`);
   const filas = await res.json();
-  return filas.map(fila => ({
-    id:              String(fila.id || ''),
-    nombre:          String(fila.nombre || ''),
-    precio:          parseFloat(fila.precio) || 0,
-    precio_anterior: (fila.precio_anterior !== '' && fila.precio_anterior !== null && fila.precio_anterior !== undefined)
-                       ? parseFloat(fila.precio_anterior) : null,
-    categoria:       String(fila.categoria || ''),
-    descripcion:     String(fila.descripcion || ''),
-    foto1:           String(fila.foto1 || ''),
-    foto2:           String(fila.foto2 || ''),
-    foto3:           String(fila.foto3 || ''),
-    foto4:           String(fila.foto4 || ''),
-    activo:          fila.activo === true || String(fila.activo).toUpperCase() === 'TRUE',
-    destacado:       fila.destacado === true || String(fila.destacado).toUpperCase() === 'TRUE',
-  }));
+  return filas.map(raw => {
+    const f = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k.toLowerCase(), v]));
+    return {
+      id:              String(f.id || ''),
+      nombre:          String(f.nombre || ''),
+      precio:          parseFloat(f.precio) || 0,
+      precio_anterior: (f.precio_anterior !== '' && f.precio_anterior !== null && f.precio_anterior !== undefined)
+                         ? parseFloat(f.precio_anterior) : null,
+      categoria:       String(f.categoria || ''),
+      descripcion:     String(f.descripcion || ''),
+      foto1:           String(f.foto1 || ''),
+      foto2:           String(f.foto2 || ''),
+      foto3:           String(f.foto3 || ''),
+      foto4:           String(f.foto4 || ''),
+      activo:          f.activo === true || String(f.activo).toUpperCase() === 'TRUE',
+      destacado:       f.destacado === true || String(f.destacado).toUpperCase() === 'TRUE',
+    };
+  });
 }
 
 /* === Banners desde Apps Script === */
@@ -197,11 +200,14 @@ async function cargarBanners() {
     const filas = await res.json();
 
     const banners = filas
-      .map(fila => ({
-        orden:  Number(fila.orden) || 0,
-        link:   String(fila.link  || '').trim(),
-        activo: fila.activo === true || String(fila.activo).toUpperCase() === 'TRUE',
-      }))
+      .map(raw => {
+        const f = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k.toLowerCase(), v]));
+        return {
+          orden:  Number(f.orden) || 0,
+          link:   String(f.link  || '').trim(),
+          activo: f.activo === true || String(f.activo).toUpperCase() === 'TRUE',
+        };
+      })
       .filter(b => b.activo && b.link !== '')
       .sort((a, b) => a.orden - b.orden);
 

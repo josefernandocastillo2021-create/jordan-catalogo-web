@@ -363,6 +363,7 @@
           foto4:           String(f.foto4 || ''),
           activo:          f.activo === true || String(f.activo).toUpperCase() === 'TRUE',
           destacado:       f.destacado === true || String(f.destacado).toUpperCase() === 'TRUE',
+          regalia:         String(f.regalia || ''),
         };
       });
     }
@@ -529,6 +530,12 @@
               <span>Código: <strong>${p.id}</strong></span>
             </div>
           </div>
+
+          ${p.regalia ? `
+          <div class="pdp__regalia">
+            <span class="pdp__regalia__label">🎁 Incluye de regalo</span>
+            <img src="${convertirLinkDrive(p.regalia)}" alt="Regalo incluido" class="pdp__regalia__img" loading="lazy">
+          </div>` : ''}
 
           ${p.descripcion ? `<p class="producto-info__descripcion">${p.descripcion}</p>` : ''}
 

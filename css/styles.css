@@ -844,6 +844,70 @@ button { cursor: pointer; border: none; font-family: inherit; }
 
 .producto-card__btn-cotizar:hover { background: var(--color-primario-hover); }
 
+/* === Overlay de regalía en tarjeta === */
+.producto-card__foto { position: relative; }
+
+.regalia-overlay {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  z-index: 2;
+}
+
+.regalia-overlay__img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  background: white;
+  border: 2px solid var(--color-secundario);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  padding: 4px;
+}
+
+.regalia-overlay__label {
+  background: var(--color-secundario);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* === Regalía en página de detalle === */
+.pdp__regalia {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #fffbf0;
+  border: 2px solid var(--color-secundario);
+  border-radius: 10px;
+}
+
+.pdp__regalia__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-texto);
+  flex: 1;
+}
+
+.pdp__regalia__img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+  border: 1.5px solid var(--color-borde);
+  padding: 4px;
+  flex-shrink: 0;
+}
+
 /* === Placeholder sin foto === */
 .foto-placeholder {
   width: 100%;

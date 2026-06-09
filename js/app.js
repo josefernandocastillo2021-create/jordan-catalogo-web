@@ -190,6 +190,7 @@ async function cargarDesdeSheets() {
       foto4:           String(f.foto4 || ''),
       activo:          f.activo === true || String(f.activo).toUpperCase() === 'TRUE',
       destacado:       f.destacado === true || String(f.destacado).toUpperCase() === 'TRUE',
+      regalia:         String(f.regalia || ''),
     };
   });
 }
@@ -436,6 +437,13 @@ function crearCardHTML(producto) {
     ? `<img src="${fotoURL}" alt="${producto.nombre}" loading="lazy" onerror="manejarErrorFoto(this, '${fotoID || ''}')">`
     : iconoSinFoto();
 
+  const regaliaHTML = producto.regalia
+    ? `<div class="regalia-overlay">
+        <img src="${convertirLinkDrive(producto.regalia)}" alt="Regalo incluido" class="regalia-overlay__img" loading="lazy">
+        <span class="regalia-overlay__label">🎁 Regalo</span>
+      </div>`
+    : '';
+
   const badgeOferta = tieneOferta
     ? `<span class="producto-card__badge producto-card__badge--oferta">-${descuento}%</span>`
     : '';
@@ -454,7 +462,7 @@ function crearCardHTML(producto) {
     <div class="producto-card" onclick="window.location='producto.html?id=${producto.id}'">
       ${badgeOferta}
       ${badgeDestacado}
-      <div class="producto-card__foto">${fotoHTML}</div>
+      <div class="producto-card__foto">${fotoHTML}${regaliaHTML}</div>
       <div class="producto-card__info">
         <span class="producto-card__categoria">${producto.categoria} · <span style="font-weight:600;color:#1B3A6B;">${producto.id}</span></span>
         <h3 class="producto-card__nombre">${producto.nombre}</h3>

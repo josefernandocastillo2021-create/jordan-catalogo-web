@@ -859,8 +859,8 @@ button { cursor: pointer; border: none; font-family: inherit; }
 }
 
 .regalia-overlay__img {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
   background: transparent;
   border-radius: 6px;

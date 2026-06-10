@@ -3,7 +3,7 @@
 const CACHE_KEY = 'jordan_productos';
 const CACHE_KEY_BANNERS = 'jordan_banners';
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutos en ms
-const API_URL = 'https://script.google.com/macros/s/AKfycbw4Tx2mVKd_l6GuImW6SDJl_ZyX_IXGmYKzmhtlhewszfkLCHb0qrqkX8Z7Ni8MbNQ6_Q/exec';
+const API_URL = CONFIG.apiUrl;
 
 let todosLosProductos = [];
 let categoriaActiva = 'Todos';

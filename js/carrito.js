@@ -135,7 +135,7 @@ function enviarCotizacion() {
   });
   msg += `\nTotal estimado: L ${totalCarrito().toLocaleString('es-HN')}`;
 
-  const numero = (typeof WA_NUMERO !== 'undefined') ? WA_NUMERO : '50494452724';
+  const numero = (typeof WA_NUMERO !== 'undefined') ? WA_NUMERO : CONFIG.whatsapp;
   window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
